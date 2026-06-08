@@ -1,0 +1,27 @@
+__pycache__/
+*.py[cod]
+
+.venv/
+
+# .env
+# .env.*
+
+.vscode/
+
+# .pytest_cache/
+# .coverage
+# htmlcov/
+
+.ruff_cache/
+.mypy_cache/
+
+.ipynb_checkpoints/
+
+dist/
+build/
+wheels/
+*.egg-info/
+
+node_modules/
+
+site/
