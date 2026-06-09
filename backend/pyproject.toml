@@ -1,14 +1,11 @@
 [project]
 name = "app"
 version = "0.1.0"
-description = "Add your description here"
-readme = "README.md"
+description = "Backend for LaporMas"
 authors = [{ name = "RifqiAnshari1", email = "rifqi.anshari@ui.ac.id" }]
 requires-python = ">=3.12"
 dependencies = [
     "alembic>=1.17.2",
-    "bcrypt>=5.0.0",
-    "boto3>=1.43.3",
     "fastapi[standard]>=0.128.0",
     "uvicorn==0.47.0",
     "psycopg2-binary>=2.9.11",
