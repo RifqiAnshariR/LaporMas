@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -13,7 +13,7 @@ class _FrozenSettings(BaseSettings):
 
 
 class ServingConfig(_FrozenModel):
-    session_ttl_sec: int
+    session_ttl_sec: int = Field(default=300)
 
 
 class EnvSettings(_FrozenSettings):
@@ -23,12 +23,9 @@ class EnvSettings(_FrozenSettings):
     public_issue_classification_url: str
 
 
-class Config(_FrozenSettings):
-    serving: ServingConfig
-    env: EnvSettings
+class AppConfig(_FrozenSettings):
+    serving: ServingConfig = ServingConfig()
+    env: EnvSettings = EnvSettings()  # type: ignore
 
 
-config = Config(
-    serving=ServingConfig(session_ttl_sec=300),
-    env=EnvSettings(),  # type: ignore
-)
+config = AppConfig()
