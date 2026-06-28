@@ -5,7 +5,7 @@ export function createMessageView(props) {
     <div class="card">
       <h2>Form Laporan</h2>
       <p>Tuliskan laporan Anda.</p>
-      <form id="messageForm">
+      <form id="message-form">
         <textarea id="message" rows="8" required></textarea>
         <button type="submit">Kirim</button>
       </form>
@@ -13,7 +13,7 @@ export function createMessageView(props) {
     </div>
   `;
 
-  root.querySelector("#messageForm").addEventListener("submit", (e) => {
+  root.querySelector("#message-form").addEventListener("submit", (e) => {
     e.preventDefault();
     props.onSubmit({ message: root.querySelector("#message").value });
   });

@@ -6,14 +6,14 @@ export function createSuccessView(props) {
       <h2>Laporan Berhasil Dikirim</h2>
       <p>Simpan id tiket Anda.</p>
       <div class="info-box copy-box">
-        <span id="ticketResult"></span>
+        <span id="ticket-result"></span>
         <button id="copy-btn" type="button">Copy</button>
       </div>
       <button id="success-back-btn" type="button">Kembali ke Beranda</button>
     </div>
   `;
 
-  root.querySelector("#ticketResult").innerHTML = `<p>${props.ticketId}</p>`;
+  root.querySelector("#ticket-result").innerHTML = `<p>${props.ticketId}</p>`;
   root.querySelector("#copy-btn").addEventListener("click", props.onCopy);
   root
     .querySelector("#success-back-btn")

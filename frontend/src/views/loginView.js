@@ -5,7 +5,7 @@ export function createLoginView(props) {
     <div class="card">
       <h2>Login</h2>
       <p>Masukkan NIK Anda.</p>
-      <form id="loginForm">
+      <form id="login-form">
         <input type="text" id="nik" pattern="[0-9]{16}" required>
         <button type="submit">Masuk</button>
       </form>
@@ -13,7 +13,7 @@ export function createLoginView(props) {
     </div>
   `;
 
-  root.querySelector("#loginForm").addEventListener("submit", (e) => {
+  root.querySelector("#login-form").addEventListener("submit", (e) => {
     e.preventDefault();
     props.onSubmit({ nik: root.querySelector("#nik").value });
   });

@@ -5,20 +5,20 @@ export function createTicketView(props) {
     <div class="card">
       <h2>Cek Tiket</h2>
       <p>Masukkan id tiket Anda.</p>
-      <div id="ticketInfo" class="info-box"></div>
-      <form id="ticketForm">
-        <input type="text" id="ticketId" required>
+      <div id="ticket-info" class="info-box"></div>
+      <form id="ticket-form">
+        <input type="text" id="ticket-id" required>
         <button type="submit">Cari</button>
       </form>
       <button id="ticket-back-btn" type="button">Kembali</button>
     </div>
   `;
 
-  const ticketInfo = root.querySelector("#ticketInfo");
+  const ticketInfo = root.querySelector("#ticket-info");
 
-  root.querySelector("#ticketForm").addEventListener("submit", (e) => {
+  root.querySelector("#ticket-form").addEventListener("submit", (e) => {
     e.preventDefault();
-    props.onSubmit(root.querySelector("#ticketId").value.trim());
+    props.onSubmit(root.querySelector("#ticket-id").value.trim());
   });
 
   root
