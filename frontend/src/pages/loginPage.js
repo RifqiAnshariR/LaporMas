@@ -1,12 +1,31 @@
-import { createLoginView } from "../views/loginView.js";
 import { login } from "../api/auth.js";
-import { navigate } from "../app.js";
 import { getErrorMessage } from "../lib/errorMessage.js";
+import { navigate } from "../app.js";
 
-export function LoginPage() {
-  const onSubmit = async ({ nik }) => {
+export function loginPage() {
+  const root = document.createElement("section");
+
+  root.innerHTML = `
+    <div class="card">
+      <h2>Login</h2>
+      <p>Masukkan NIK Anda.</p>
+      <form id="login-form">
+        <input id="nik" type="text" pattern="[0-9]{16}" required/>
+        <button type="submit">Masuk</button>
+      </form>
+      <button id="back-btn" type="button">Kembali</button>
+    </div>
+  `;
+
+  const form = root.querySelector("#login-form");
+  const nikInput = root.querySelector("#nik");
+  const backBtn = root.querySelector("#back-btn");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
     try {
-      const response = await login({ nik });
+      const response = await login({ nik: nikInput.value });
       const data = await response.json();
 
       if (!response.ok) {
@@ -15,14 +34,14 @@ export function LoginPage() {
       }
 
       navigate("message");
-    } catch {
-      alert("Could not reach the server");
+    } catch (error) {
+      alert(error.message);
     }
-  };
+  });
 
-  const onBack = () => {
+  backBtn.addEventListener("click", () => {
     navigate("landing");
-  };
+  });
 
-  return createLoginView({ onSubmit, onBack });
+  return { root };
 }

@@ -1,13 +1,32 @@
-import { createMessageView } from "../views/messageView.js";
 import { sendMessage } from "../api/message.js";
 import { logout } from "../api/auth.js";
-import { navigate } from "../app.js";
 import { getErrorMessage } from "../lib/errorMessage.js";
+import { navigate } from "../app.js";
 
-export function MessagePage() {
-  const onSubmit = async ({ message }) => {
+export function messagePage() {
+  const root = document.createElement("section");
+
+  root.innerHTML = `
+    <div class="card">
+      <h2>Form Laporan</h2>
+      <p>Tuliskan laporan Anda.</p>
+      <form id="message-form">
+        <textarea id="message" rows="8" required></textarea>
+        <button type="submit">Kirim</button>
+      </form>
+      <button id="back-btn" type="button">Kembali</button>
+    </div>
+  `;
+
+  const form = root.querySelector("#message-form");
+  const textarea = root.querySelector("#message");
+  const backBtn = root.querySelector("#back-btn");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
     try {
-      const response = await sendMessage({ message });
+      const response = await sendMessage({ message: textarea.value });
       const data = await response.json();
 
       if (response.status === 401) {
@@ -22,22 +41,22 @@ export function MessagePage() {
       }
 
       sessionStorage.setItem("ticketId", data.ticket_id);
+
       await logout();
       navigate("success");
-    } catch {
-      alert("Could not reach the server");
+    } catch (error) {
+      alert(error.message);
     }
-  };
+  });
 
-  const onBack = async () => {
+  backBtn.addEventListener("click", async () => {
     try {
       await logout();
-    } catch {
-      alert("Could not reach the server");
+      navigate("landing");
+    } catch (error) {
+      alert(error.message);
     }
+  });
 
-    navigate("landing");
-  };
-
-  return createMessageView({ onSubmit, onBack });
+  return { root };
 }

@@ -1,20 +1,20 @@
 import { pageLoader } from "./lib/pageLoader.js";
 
-import { LandingPage } from "./pages/landingPage.js";
-import { LoginPage } from "./pages/loginPage.js";
-import { MessagePage } from "./pages/messagePage.js";
-import { SuccessPage } from "./pages/successPage.js";
-import { TicketPage } from "./pages/ticketPage.js";
+import { landingPage } from "./pages/landingPage.js";
+import { loginPage } from "./pages/loginPage.js";
+import { messagePage } from "./pages/messagePage.js";
+import { successPage } from "./pages/successPage.js";
+import { ticketPage } from "./pages/ticketPage.js";
 
 const loadPage = pageLoader();
 
 export function navigate(page) {
   const routes = {
-    landing: LandingPage,
-    login: LoginPage,
-    message: MessagePage,
-    success: SuccessPage,
-    ticket: TicketPage,
+    landing: landingPage,
+    login: loginPage,
+    message: messagePage,
+    success: successPage,
+    ticket: ticketPage,
   };
 
   loadPage(routes[page]);
