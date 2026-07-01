@@ -3,24 +3,22 @@ import { navigate } from "../app.js";
 import { getErrorMessage } from "../lib/errorMessage.js";
 
 export function ticketPage() {
-  const root = document.createElement("section");
+  const root = document.createElement("div");
 
   root.innerHTML = `
-    <div class="card">
-      <h2>Cek Tiket</h2>
-      <p>Masukkan ID tiket Anda.</p>
-      <div id="ticket-info" class="info-box"></div>
-      <form id="ticket-form">
-        <input
-          id="ticket-id"
-          type="text"
-          pattern="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}"
-          required
-        />
-        <button type="submit">Cari</button>
-      </form>
-      <button id="back-btn" type="button">Kembali</button>
-    </div>
+    <h2>Cek Tiket</h2>
+    <p>Masukkan ID tiket Anda.</p>
+    <div id="ticket-info" class="info-box"></div>
+    <form id="ticket-form">
+      <input
+        id="ticket-id"
+        type="text"
+        pattern="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}"
+        required
+      />
+      <button type="submit">Cari</button>
+    </form>
+    <button id="back-btn" type="button">Kembali</button>
   `;
 
   const ticketInfo = root.querySelector("#ticket-info");

@@ -1,19 +1,17 @@
 import { navigate } from "../app.js";
 
 export function successPage() {
-  const root = document.createElement("section");
+  const root = document.createElement("div");
   const ticketId = sessionStorage.getItem("ticketId");
 
   root.innerHTML = `
-    <div class="card">
-      <h2>Laporan Berhasil Dikirim</h2>
-      <p>Simpan ID tiket Anda.</p>
-      <div class="info-box copy-box">
-        <span id="ticket-result">${ticketId}</span>
-        <button id="copy-btn" type="button">Copy</button>
-      </div>
-      <button id="back-btn" type="button">Kembali ke Beranda</button>
+    <h2>Laporan Berhasil Dikirim</h2>
+    <p>Simpan ID tiket Anda.</p>
+    <div class="info-box copy-box">
+      <span id="ticket-result">${ticketId}</span>
+      <button id="copy-btn" type="button">Copy</button>
     </div>
+    <button id="back-btn" type="button">Kembali ke Beranda</button>
   `;
 
   const copyBtn = root.querySelector("#copy-btn");

@@ -3,18 +3,16 @@ import { getErrorMessage } from "../lib/errorMessage.js";
 import { navigate } from "../app.js";
 
 export function loginPage() {
-  const root = document.createElement("section");
+  const root = document.createElement("div");
 
   root.innerHTML = `
-    <div class="card">
-      <h2>Login</h2>
-      <p>Masukkan NIK Anda.</p>
-      <form id="login-form">
-        <input id="nik" type="text" pattern="[0-9]{16}" required/>
-        <button type="submit">Masuk</button>
-      </form>
-      <button id="back-btn" type="button">Kembali</button>
-    </div>
+    <h2>Login</h2>
+    <p>Masukkan NIK Anda.</p>
+    <form id="login-form">
+      <input id="nik" type="text" pattern="[0-9]{16}" required/>
+      <button type="submit">Masuk</button>
+    </form>
+    <button id="back-btn" type="button">Kembali</button>
   `;
 
   const form = root.querySelector("#login-form");

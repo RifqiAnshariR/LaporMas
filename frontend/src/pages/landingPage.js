@@ -2,16 +2,14 @@ import jakartaLogo from "../assets/logo_jakarta.png";
 import { navigate } from "../app.js";
 
 export function landingPage() {
-  const root = document.createElement("section");
+  const root = document.createElement("div");
 
   root.innerHTML = `
-    <div class="container">
-      <img src="${jakartaLogo}" alt="Logo DKI Jakarta"/>
-      <h1>LaporMas</h1>
-      <p>Sampaikan aspirasi atau keluhan Anda dengan mudah.</p>
-      <button id="start-btn" type="button">Buat Laporan</button>
-      <button id="check-ticket-btn" type="button">Cek Tiket</button>
-    </div>
+    <img src="${jakartaLogo}" alt="Logo DKI Jakarta"/>
+    <h1>LaporMas</h1>
+    <p>Sampaikan aspirasi atau keluhan Anda dengan mudah.</p>
+    <button id="start-btn" type="button">Buat Laporan</button>
+    <button id="check-ticket-btn" type="button">Cek Tiket</button>
   `;
 
   const startBtn = root.querySelector("#start-btn");

@@ -4,18 +4,16 @@ import { getErrorMessage } from "../lib/errorMessage.js";
 import { navigate } from "../app.js";
 
 export function messagePage() {
-  const root = document.createElement("section");
+  const root = document.createElement("div");
 
   root.innerHTML = `
-    <div class="card">
-      <h2>Form Laporan</h2>
-      <p>Tuliskan laporan Anda.</p>
-      <form id="message-form">
-        <textarea id="message" rows="8" required></textarea>
-        <button type="submit">Kirim</button>
-      </form>
-      <button id="back-btn" type="button">Kembali</button>
-    </div>
+    <h2>Form Laporan</h2>
+    <p>Tuliskan laporan Anda.</p>
+    <form id="message-form">
+      <textarea id="message" rows="8" required></textarea>
+      <button type="submit">Kirim</button>
+    </form>
+    <button id="back-btn" type="button">Kembali</button>
   `;
 
   const form = root.querySelector("#message-form");
