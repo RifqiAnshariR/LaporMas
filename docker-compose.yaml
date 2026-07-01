@@ -34,7 +34,7 @@ services:
       interval: 5s
       timeout: 1m
       retries: 5
-      start_period: 10s
+      start_period: 30s
 
   public_issue:
     image: ghcr.io/rifqiansharir/indobert-public-issue-api:v1
@@ -50,7 +50,7 @@ services:
       interval: 5s
       timeout: 1m
       retries: 5
-      start_period: 10s
+      start_period: 30s
 
   backend:
     build:
