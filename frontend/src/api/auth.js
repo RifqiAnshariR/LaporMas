@@ -1,30 +1,36 @@
 import { BASE_URL } from "../constants.js";
+import { getErrorMessage } from "../lib/errorMessage.js";
 
-/**
- * Sends a login request to the backend.
- *
- * @param {Object} payload - The user login credentials.
- * @returns {Promise<Response>} The network response.
- */
 export async function login(payload) {
-  return fetch(`${BASE_URL}/login`, {
+  const response = await fetch(`${BASE_URL}/login`, {
     method: "POST",
     credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
   });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(getErrorMessage(data));
+  }
+
+  return data;
 }
 
-/**
- * Sends a logout request to the backend.
- *
- * @returns {Promise<Response>} The network response.
- */
 export async function logout() {
-  return fetch(`${BASE_URL}/logout`, {
+  const response = await fetch(`${BASE_URL}/logout`, {
     method: "POST",
     credentials: "include",
   });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    const error = new Error(getErrorMessage(data));
+    error.status = response.status;
+    throw error;
+  }
+
+  return data;
 }

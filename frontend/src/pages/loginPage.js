@@ -1,5 +1,4 @@
 import { login } from "../api/auth.js";
-import { getErrorMessage } from "../lib/errorMessage.js";
 import { navigate } from "../app.js";
 
 export function loginPage() {
@@ -7,29 +6,28 @@ export function loginPage() {
 
   root.innerHTML = `
     <h2>Login</h2>
-    <p>Masukkan NIK Anda.</p>
     <form id="login-form">
-      <input id="nik" type="text" pattern="[0-9]{16}" required/>
+      <input 
+        id="nik" 
+        type="text" 
+        pattern="[0-9]{16}" 
+        placeholder="Masukkan NIK Anda..." 
+        required
+      />
       <button type="submit">Masuk</button>
     </form>
     <button id="back-btn" type="button">Kembali</button>
   `;
 
-  const form = root.querySelector("#login-form");
+  const loginForm = root.querySelector("#login-form");
   const nikInput = root.querySelector("#nik");
   const backBtn = root.querySelector("#back-btn");
 
-  form.addEventListener("submit", async (e) => {
+  loginForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     try {
-      const response = await login({ nik: nikInput.value });
-      const data = await response.json();
-
-      if (!response.ok) {
-        alert(getErrorMessage(data));
-        return;
-      }
+      await login({ nik: nikInput.value });
 
       navigate("message");
     } catch (error) {

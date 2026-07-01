@@ -6,7 +6,6 @@ export function successPage() {
 
   root.innerHTML = `
     <h2>Laporan Berhasil Dikirim</h2>
-    <p>Simpan ID tiket Anda.</p>
     <div class="info-box copy-box">
       <span id="ticket-result">${ticketId}</span>
       <button id="copy-btn" type="button">Copy</button>
@@ -23,6 +22,7 @@ export function successPage() {
 
   backBtn.addEventListener("click", () => {
     sessionStorage.removeItem("ticketId");
+
     navigate("landing");
   });
 

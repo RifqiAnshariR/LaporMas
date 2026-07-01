@@ -1,19 +1,18 @@
 import { getTicket } from "../api/ticket.js";
 import { navigate } from "../app.js";
-import { getErrorMessage } from "../lib/errorMessage.js";
 
 export function ticketPage() {
   const root = document.createElement("div");
 
   root.innerHTML = `
     <h2>Cek Tiket</h2>
-    <p>Masukkan ID tiket Anda.</p>
     <div id="ticket-info" class="info-box"></div>
     <form id="ticket-form">
       <input
         id="ticket-id"
         type="text"
         pattern="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}"
+        placeholder="Masukkan ID tiket Anda..."
         required
       />
       <button type="submit">Cari</button>
@@ -26,7 +25,7 @@ export function ticketPage() {
   const ticketIdInput = root.querySelector("#ticket-id");
   const backBtn = root.querySelector("#back-btn");
 
-  function renderTicket(ticket) {
+  function showTicket(ticket) {
     if (!ticket) {
       ticketInfo.innerHTML = "";
       return;
@@ -40,21 +39,15 @@ export function ticketPage() {
     `;
   }
 
-  renderTicket(null);
+  showTicket(null);
 
   ticketForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     try {
-      const response = await getTicket(ticketIdInput.value.trim());
-      const data = await response.json();
+      const data = await getTicket(ticketIdInput.value.trim());
 
-      if (!response.ok) {
-        alert(getErrorMessage(data));
-        return;
-      }
-
-      renderTicket(data);
+      showTicket(data);
     } catch (error) {
       alert(error.message);
     }

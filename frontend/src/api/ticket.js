@@ -1,11 +1,15 @@
 import { BASE_URL } from "../constants.js";
+import { getErrorMessage } from "../lib/errorMessage.js";
 
-/**
- * Fetches a specific ticket by its ID.
- *
- * @param {string|number} ticketId - The unique ID of the ticket.
- * @returns {Promise<Response>} The network response.
- */
 export async function getTicket(ticketId) {
-  return fetch(`${BASE_URL}/ticket/${ticketId}`);
+  const response = await fetch(`${BASE_URL}/ticket/${ticketId}`);
+  const data = await response.json();
+
+  if (!response.ok) {
+    const error = new Error(getErrorMessage(data));
+    error.status = response.status;
+    throw error;
+  }
+
+  return data;
 }
