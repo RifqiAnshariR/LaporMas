@@ -6,6 +6,9 @@ export function messagePage() {
   const root = document.createElement("div");
 
   root.innerHTML = `
+    <div id="loading-overlay" hidden>
+      <div class="spinner"></div>
+    </div>
     <h2>Form Laporan</h2>
     <form id="message-form">
       <textarea id="message" rows="8" placeholder="Tuliskan laporan Anda..." required></textarea>
@@ -17,9 +20,16 @@ export function messagePage() {
   const messageForm = root.querySelector("#message-form");
   const textarea = root.querySelector("#message");
   const backBtn = root.querySelector("#back-btn");
+  const overlay = root.querySelector("#loading-overlay");
+
+  let isLoading = false;
 
   messageForm.addEventListener("submit", async (e) => {
     e.preventDefault();
+
+    if (isLoading) return;
+    isLoading = true;
+    overlay.hidden = false;
 
     try {
       const data = await sendMessage({ message: textarea.value });
@@ -32,21 +42,32 @@ export function messagePage() {
     } catch (error) {
       if (error.status === 401) {
         alert("Please log in first");
+
         navigate("login");
         return;
       }
 
       alert(error.message);
+    } finally {
+      overlay.hidden = true;
+      isLoading = false;
     }
   });
 
   backBtn.addEventListener("click", async () => {
+    if (isLoading) return;
+    isLoading = true;
+    overlay.hidden = false;
+
     try {
       await logout();
 
-      navigate("landing");
+      navigate("login");
     } catch (error) {
       alert(error.message);
+    } finally {
+      overlay.hidden = true;
+      isLoading = false;
     }
   });
 

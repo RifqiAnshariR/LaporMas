@@ -5,6 +5,9 @@ export function ticketPage() {
   const root = document.createElement("div");
 
   root.innerHTML = `
+    <div id="loading-overlay" hidden>
+      <div class="spinner"></div>
+    </div>
     <h2>Cek Tiket</h2>
     <div id="ticket-info" class="info-box"></div>
     <form id="ticket-form">
@@ -24,6 +27,7 @@ export function ticketPage() {
   const ticketForm = root.querySelector("#ticket-form");
   const ticketIdInput = root.querySelector("#ticket-id");
   const backBtn = root.querySelector("#back-btn");
+  const overlay = root.querySelector("#loading-overlay");
 
   function showTicket(ticket) {
     if (!ticket) {
@@ -39,10 +43,16 @@ export function ticketPage() {
     `;
   }
 
+  let isLoading = false;
+
   showTicket(null);
 
   ticketForm.addEventListener("submit", async (e) => {
     e.preventDefault();
+
+    if (isLoading) return;
+    isLoading = true;
+    overlay.hidden = false;
 
     try {
       const data = await getTicket(ticketIdInput.value.trim());
@@ -50,6 +60,9 @@ export function ticketPage() {
       showTicket(data);
     } catch (error) {
       alert(error.message);
+    } finally {
+      overlay.hidden = true;
+      isLoading = false;
     }
   });
 
