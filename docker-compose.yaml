@@ -3,9 +3,9 @@ services:
     image: postgres:16-alpine
     container_name: userdata-db
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: userdatadb
+      POSTGRES_USER: ${USERDATA_DB_USER}
+      POSTGRES_PASSWORD: ${USERDATA_DB_PASSWORD}
+      POSTGRES_DB: ${USERDATA_DB_NAME}
     ports:
       - "5433:5432"
     # expose:
@@ -15,7 +15,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d userdatadb" ]
+      test: [ "CMD-SHELL", "pg_isready -U ${USERDATA_DB_USER} -d ${USERDATA_DB_NAME}" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -60,10 +60,14 @@ services:
     command: >
       sh -c " uv run alembic upgrade head && uv run uvicorn app.main:app --host 0.0.0.0 --port 8000 "
     environment:
-      USERDATA_DB_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/userdatadb
       SPAM_HAM_CLASSIFICATION_URL: http://spam_ham:8000/predict
       PUBLIC_ISSUE_CLASSIFICATION_URL: http://public_issue:8000/predict
       SESSION_SECRET_KEY: ${SESSION_SECRET_KEY}
+      USERDATA_DB_USER: ${USERDATA_DB_USER}
+      USERDATA_DB_PASSWORD: ${USERDATA_DB_PASSWORD}
+      USERDATA_DB_NAME: ${USERDATA_DB_NAME}
+      USERDATA_DB_HOST: postgres
+      USERDATA_DB_PORT: 5432
     expose:
       - "8000"
     networks:

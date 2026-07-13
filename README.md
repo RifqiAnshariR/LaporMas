@@ -13,9 +13,10 @@ Requirements:
 How to run:
 - Make .env contains:
 ```
-POSTGRES_USER=<postgres_username>
-POSTGRES_PASSWORD=<postgres_password>
-SESSION_SECRET_KEY=<random_key>
+SESSION_SECRET_KEY=<random generated key>
+USERDATA_DB_USER=<user data db username>
+USERDATA_DB_PASSWORD=<user data db password>
+USERDATA_DB_NAME=<user data db name>
 ```
 - See:
 ```

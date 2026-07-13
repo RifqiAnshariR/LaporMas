@@ -11,8 +11,8 @@ from app.db import engine
 app = FastAPI(docs_url=None, openapi_url=None)
 app.add_middleware(
     SessionMiddleware,
-    secret_key=config.env.session_secret_key,
-    max_age=config.serving.session_ttl_sec,
+    secret_key=config.session_secret_key,
+    max_age=config.session_ttl_sec,
 )
 app.add_middleware(
     CORSMiddleware,
@@ -26,6 +26,6 @@ app.include_router(user_auth.router, tags=["Auth"])
 app.include_router(user_message.router, tags=["Message"])
 app.include_router(ticket_check.router, tags=["Ticket"])
 
-authentication_backend = AdminAuth(secret_key=config.env.session_secret_key)
+authentication_backend = AdminAuth(secret_key=config.session_secret_key)
 admin = Admin(app, engine, authentication_backend=authentication_backend)
 admin.add_view(UserAdmin)
