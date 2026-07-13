@@ -1,34 +1,26 @@
 services:
-  postgres:
+  userdata-db:
     image: postgres:16-alpine
-    container_name: userdata-db
     environment:
       POSTGRES_USER: ${USERDATA_DB_USER}
       POSTGRES_PASSWORD: ${USERDATA_DB_PASSWORD}
       POSTGRES_DB: ${USERDATA_DB_NAME}
-    ports:
-      - "5433:5432"
-    # expose:
-    #   - "5432"
-    networks:
-      - lapormas-net
+    # ports:
+    #   - "5433:5432"
+    expose:
+      - "5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - userdata_db_data:/var/lib/postgresql/data
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ${USERDATA_DB_USER} -d ${USERDATA_DB_NAME}" ]
       interval: 5s
       timeout: 5s
       retries: 5
 
-  spam_ham:
+  spam-ham-api:
     image: ghcr.io/rifqiansharir/indobert-spam-ham-api:v1
-    container_name: spam-ham-api
-    # ports:
-    #   - "8001:8000"
     expose:
       - "8000"
-    networks:
-      - lapormas-net
     healthcheck:
       test: [ "CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')" ]
       interval: 5s
@@ -36,15 +28,10 @@ services:
       retries: 5
       start_period: 30s
 
-  public_issue:
+  public-issue-api:
     image: ghcr.io/rifqiansharir/indobert-public-issue-api:v1
-    container_name: public-issue-api
-    # ports:
-    #   - "8002:8000"
     expose:
       - "8000"
-    networks:
-      - lapormas-net
     healthcheck:
       test: [ "CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')" ]
       interval: 5s
@@ -56,46 +43,39 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: backend-service
     command: >
-      sh -c " uv run alembic upgrade head && uv run uvicorn app.main:app --host 0.0.0.0 --port 8000 "
+      sh -c "
+      uv run alembic upgrade head && 
+      uv run uvicorn app.main:app --host 0.0.0.0 --port 8000
+      "
     environment:
-      SPAM_HAM_CLASSIFICATION_URL: http://spam_ham:8000/predict
-      PUBLIC_ISSUE_CLASSIFICATION_URL: http://public_issue:8000/predict
+      SPAM_HAM_API_URL: http://spam-ham-api:8000/predict
+      PUBLIC_ISSUE_API_URL: http://public-issue-api:8000/predict
       SESSION_SECRET_KEY: ${SESSION_SECRET_KEY}
       USERDATA_DB_USER: ${USERDATA_DB_USER}
       USERDATA_DB_PASSWORD: ${USERDATA_DB_PASSWORD}
       USERDATA_DB_NAME: ${USERDATA_DB_NAME}
-      USERDATA_DB_HOST: postgres
+      USERDATA_DB_HOST: userdata-db
       USERDATA_DB_PORT: 5432
     expose:
       - "8000"
-    networks:
-      - lapormas-net
     depends_on:
-      postgres:
+      userdata-db:
         condition: service_healthy
-      spam_ham:
+      spam-ham-api:
         condition: service_healthy
-      public_issue:
+      public-issue-api:
         condition: service_healthy
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    container_name: frontend-service
     ports:
       - "80:80"
-    networks:
-      - lapormas-net
     depends_on:
       backend:
         condition: service_started
 
 volumes:
-  postgres_data:
-
-networks:
-  lapormas-net:
-    driver: bridge
+  userdata_db_data:
