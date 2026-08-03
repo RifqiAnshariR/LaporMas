@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlmodel import Session
 
-from app.ai_client import public_issue_classification, spam_ham_classification
+from app.ai_client import public_issue_classification, spam_detection
 from app.api.deps import get_db
 from app.crud import insert_user_data
 from app.models import MessageCreate, MessageResponse
@@ -21,7 +21,7 @@ async def create_message(
     if not nik:
         raise HTTPException(status_code=401, detail="Please login first")
 
-    spam_result = await spam_ham_classification(message=payload.message)
+    spam_result = await spam_detection(message=payload.message)
     if spam_result["prediction_label"] == "positive":
         raise HTTPException(status_code=400, detail="Message detected as spam")
 

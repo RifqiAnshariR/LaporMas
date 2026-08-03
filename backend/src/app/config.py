@@ -14,8 +14,8 @@ class Config(BaseSettings):
 
     # Env
     session_secret_key: str
-    spam_ham_api_url: str
-    public_issue_api_url: str
+    spam_detection_api_url: str
+    public_issue_classification_api_url: str
 
     userdata_db_user: str
     userdata_db_password: str

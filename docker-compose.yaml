@@ -17,10 +17,8 @@ services:
       timeout: 5s
       retries: 5
 
-  spam-ham-api:
-    image: ghcr.io/rifqiansharir/indobert-spam-ham-api:v1
-    expose:
-      - "8000"
+  spam-detection-api:
+    image: ghcr.io/rifqiansharir/indobert-spam-detection-api:latest
     healthcheck:
       test: [ "CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')" ]
       interval: 5s
@@ -28,10 +26,8 @@ services:
       retries: 5
       start_period: 30s
 
-  public-issue-api:
-    image: ghcr.io/rifqiansharir/indobert-public-issue-api:v1
-    expose:
-      - "8000"
+  public-issue-classification-api:
+    image: ghcr.io/rifqiansharir/indobert-public-issue-classification-api:latest
     healthcheck:
       test: [ "CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')" ]
       interval: 5s
@@ -43,28 +39,21 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    command: >
-      sh -c "
-      uv run alembic upgrade head && 
-      uv run uvicorn app.main:app --host 0.0.0.0 --port 8000
-      "
     environment:
-      SPAM_HAM_API_URL: http://spam-ham-api:8000/predict
-      PUBLIC_ISSUE_API_URL: http://public-issue-api:8000/predict
+      SPAM_DETECTION_API_URL: http://spam-detection-api:8000/predict
+      PUBLIC_ISSUE_CLASSIFICATION_API_URL: http://public-issue-classification-api:8000/predict
       SESSION_SECRET_KEY: ${SESSION_SECRET_KEY}
       USERDATA_DB_USER: ${USERDATA_DB_USER}
       USERDATA_DB_PASSWORD: ${USERDATA_DB_PASSWORD}
       USERDATA_DB_NAME: ${USERDATA_DB_NAME}
       USERDATA_DB_HOST: userdata-db
       USERDATA_DB_PORT: 5432
-    expose:
-      - "8000"
     depends_on:
       userdata-db:
         condition: service_healthy
-      spam-ham-api:
+      spam-detection-api:
         condition: service_healthy
-      public-issue-api:
+      public-issue-classification-api:
         condition: service_healthy
 
   frontend:
