@@ -20,17 +20,26 @@ sync-backend:
 sync-frontend:
 	cd frontend && npm install
 
+## Sync frontend and backend dependencies
+.PHONY: sync
+sync: sync-backend sync-frontend
+
 ## Delete backend cache files/folders
 .PHONY: clean-backend
 clean-backend:
 	find ./backend -type f -name "*.py[co]" -delete
 	find ./backend -type d -name "__pycache__" -delete
+	rm -rf ./backend/.ruff_cache
 
 ## Delete frontend cache files/folders
 .PHONY: clean-frontend
 clean-frontend:
 	rm -rf ./frontend/dist
 	rm -rf ./frontend/.eslintcache
+
+## Delete frontend and backend cache files/folders
+.PHONY: clean
+clean: clean-backend clean-frontend
 
 ## Lint backend code with ruff
 .PHONY: lint-backend
@@ -53,6 +62,10 @@ lint-frontend:
 .PHONY: lint-fix-frontend
 lint-fix-frontend:
 	cd frontend && npm run lint:fix
+
+.PHONY: build-frontend
+build-frontend:
+	cd frontend && npm run build
 
 #################################################################################
 # Self Documenting Commands                                                     #
