@@ -48,6 +48,8 @@ services:
       USERDATA_DB_NAME: ${USERDATA_DB_NAME}
       USERDATA_DB_HOST: userdata-db
       USERDATA_DB_PORT: 5432
+    ports:
+      - "127.0.0.1:8000:8000"
     depends_on:
       userdata-db:
         condition: service_healthy
@@ -60,11 +62,8 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    ports:
-      - "80:80"
-    depends_on:
-      backend:
-        condition: service_started
+    volumes:
+      - ./frontend/dist:/app/dist
 
 volumes:
   userdata_db_data:
